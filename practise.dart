@@ -7,7 +7,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +22,9 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -98,8 +97,10 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 16.0),
             Text(
               'Predicted Category: $_predictedCategory',
-              style:
-                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -123,15 +124,31 @@ Future<String> predictNewsCategory(String newsText, String titleText) async {
   } else if (response.statusCode == 302) {
     final redirectUrl = response.headers['location'];
     if (redirectUrl != null) {
-      final redirectResponse = await http.get(Uri.parse(redirectUrl));
-      if (redirectResponse.statusCode == 200) {
-        final redirectResponseBody = json.decode(redirectResponse.body);
-        final predictedCategory = redirectResponseBody['context'];
-        return predictedCategory;
+      final finalRedirectUrl = await getFinalRedirectUrl(redirectUrl);
+      if (finalRedirectUrl != null) {
+        final finalRedirectResponse =
+            await http.get(Uri.parse(finalRedirectUrl));
+        if (finalRedirectResponse.statusCode == 200) {
+          final finalRedirectResponseBody =
+              json.decode(finalRedirectResponse.body);
+          final predictedCategory = finalRedirectResponseBody['context'];
+          return predictedCategory;
+        }
       }
     }
     throw Exception('Failed to predict news category');
   } else {
     throw Exception('Failed to predict news category');
   }
+}
+
+Future<String?> getFinalRedirectUrl(String url) async {
+  final response = await http.head(Uri.parse(url));
+  if (response.statusCode == 302) {
+    final redirectUrl = response.headers['location'];
+    if (redirectUrl != null) {
+      return redirectUrl;
+    }
+  }
+  return null;
 }
