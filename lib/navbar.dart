@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project1/LoginScreen.dart';
-import 'package:project1/singup.dart';
+import 'package:go_router/go_router.dart';
+// import 'package:project1/routes/app_route_config.dart';
 
 class BottomNavBarFb2 extends StatelessWidget {
   const BottomNavBarFb2({Key? key}) : super(key: key);
@@ -27,26 +27,30 @@ class BottomNavBarFb2 extends StatelessWidget {
                   text: "Online news portal",
                   icon: Icons.newspaper,
                   selected: false,
-                  onPressed: () {}),
+                  onPressed: () => {
+                        context.push('/'),
+                        print(const Text('hello')),
+                      }),
               IconBottomBar(
-                  text: "Home",
-                  icon: Icons.home,
-                  selected: true,
-                  onPressed: () {}),
+                text: "Home",
+                icon: Icons.home,
+                selected: true,
+                onPressed: () => context.pushNamed('home'),
+              ),
               IconBottomBar(
-                  text: "Login",
-                  icon: Icons.login_sharp,
-                  selected: false,
-                  onPressed: () {
-                    return const LoginScreen();
-                  }),
+                text: "Login",
+                icon: Icons.login_sharp,
+                selected: false,
+                onPressed: () {
+                  context.pushNamed('login');
+                },
+              ),
               IconBottomBar(
-                  text: "Singup",
-                  icon: Icons.signpost_rounded,
-                  selected: false,
-                  onPressed: () {
-                    return const SignupScreen();
-                  }),
+                text: "Singup",
+                icon: Icons.signpost_rounded,
+                selected: false,
+                onPressed: () => {context.pushNamed('signup'), print("Hello")},
+              ),
             ],
           ),
         ),

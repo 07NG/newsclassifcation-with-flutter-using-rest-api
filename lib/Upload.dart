@@ -32,6 +32,10 @@ class UploadScreen extends StatelessWidget {
             focusColor: Colors.blue,
           ),
         ),
+        ElevatedButton(
+          onPressed: () => {},
+          child: Text('Upload'),
+        ),
       ]),
     );
   }
