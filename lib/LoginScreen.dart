@@ -42,8 +42,6 @@ class LoginScreen extends StatelessWidget {
                   }
                 } catch (e) {
                   print(e);
-                  print(username.text);
-                  print(password.text);
                 }
               },
               child: const Text('Signin'),

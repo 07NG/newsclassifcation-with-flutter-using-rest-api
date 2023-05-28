@@ -22,12 +22,12 @@ class CategoryApi {
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      print(jsonData);
+
       List<Category> newsList = [];
 
       if (jsonData != null && jsonData['articles'] != null) {
         final articles = jsonData['articles'];
-        print('hello');
+
         for (var article in articles) {
           String title = article['title'] ?? '';
           String description = article['description'] ?? '';

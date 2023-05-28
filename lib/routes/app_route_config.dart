@@ -72,7 +72,7 @@ class MyAppRouter {
             name: 'upload',
             path: 'upload', // Remove leading slash '/'
             builder: (BuildContext context, GoRouterState state) =>
-                const UploadScreen(),
+                UploadScreen(),
           ),
           GoRoute(
             name: 'dashboard',

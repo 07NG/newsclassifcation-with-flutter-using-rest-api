@@ -1,42 +1,91 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
+import 'package:project1/api/news_prediction_api.dart';
 
-class UploadScreen extends StatelessWidget {
-  const UploadScreen({super.key});
+class UploadScreen extends StatefulWidget {
+  const UploadScreen({Key? key}) : super(key: key);
+
+  @override
+  _UploadScreenState createState() => _UploadScreenState();
+}
+
+class _UploadScreenState extends State<UploadScreen> {
+  final TextEditingController _newsTextController = TextEditingController();
+  final TextEditingController _titleTextController = TextEditingController();
+  String _predictedCategory = '';
+
+  Future<void> _predictCategory() async {
+    final newsText = _newsTextController.text;
+    final titleText = _titleTextController.text;
+    try {
+      final predictedCategory =
+          await PredictionApi().predictNewsCategory(newsText, titleText);
+      setState(() {
+        _predictedCategory = predictedCategory!;
+      });
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Prediction Error'),
+            content: const Text('Failed to predict news category.'),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Upload')),
-      body: Column(children: [
-        SizedBox(height: 20.0),
-        TextField(
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-            contentPadding: EdgeInsets.all(8.0),
-            labelText: 'Title',
-            focusColor: Colors.blue,
-          ),
+      appBar: AppBar(
+        title: const Text('News Category Prediction'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            const Text(
+              'Upload the News Here',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextField(
+              controller: _titleTextController,
+              decoration: const InputDecoration(
+                labelText: 'Title',
+              ),
+            ),
+            TextField(
+              controller: _newsTextController,
+              decoration: const InputDecoration(
+                labelText: 'Description',
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _predictCategory,
+              child: const Text('Predict Category'),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Predicted Category: $_predictedCategory',
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
-        SizedBox(
-          height: 15.0,
-        ),
-        TextField(
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-            contentPadding: EdgeInsets.all(8.0),
-            labelText: 'Description',
-            focusColor: Colors.blue,
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () => {},
-          child: Text('Upload'),
-        ),
-      ]),
+      ),
     );
   }
 }
