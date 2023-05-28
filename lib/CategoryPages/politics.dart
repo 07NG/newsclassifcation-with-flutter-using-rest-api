@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/api/get_category_api.dart';
+import 'package:project1/models/Category.dart';
 
 class PoliticsScreen extends StatelessWidget {
   final CategoryApi categoryApi = CategoryApi();
@@ -10,7 +11,7 @@ class PoliticsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Politics'),
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
+      body: FutureBuilder<List<Category>>(
         future: categoryApi.fetchNews('politics'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -25,22 +26,22 @@ class PoliticsScreen extends StatelessWidget {
             );
           } else {
             // Render the Category data using snapshot.data
-            List<Map<String, dynamic>> newsData = snapshot.data!;
+            List<Category> newsData = snapshot.data!;
 
             return ListView.builder(
               itemCount: newsData.length,
               itemBuilder: (context, index) {
-                Map<String, dynamic> article = newsData[index];
+                Category article = newsData[index];
                 return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text('Title:'),
-                      Text(article['title']),
+                      Text(article.title),
                       SizedBox(
                         height: 4.0,
                       ),
                       Text('Description:'),
-                      Text(article['description']),
+                      Text(article.description),
                     ]);
               },
             );

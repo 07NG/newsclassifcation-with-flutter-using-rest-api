@@ -1,6 +1,6 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import 'package:project1/models/Category.dart';
 
 class CategoryApi {
   // Future<Category> getCategoryData(String category) async {
@@ -13,7 +13,7 @@ class CategoryApi {
   //     throw Exception('Failed to Load');
   //   }
   // }
-  Future<List<Category>> fetchNews(String category) async {
+  Future<List<Map<String, dynamic>>> fetchNews(String category) async {
     String apiKey = '544624999aa94a889032731cb9f173c0';
     String url =
         'https://newsapi.org/v2/top-headlines?category=$category&country=us&apiKey=$apiKey';
@@ -22,12 +22,11 @@ class CategoryApi {
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      print(jsonData);
-      List<Category> newsList = [];
+      List<Map<String, dynamic>> newsList = [];
 
-      if (jsonData != null && jsonData['articles'] != null) {
+      if (jsonData['articles'] != null) {
         final articles = jsonData['articles'];
-        print('hello');
+
         for (var article in articles) {
           String title = article['title'] ?? '';
           String description = article['description'] ?? '';
@@ -36,7 +35,8 @@ class CategoryApi {
             'title': title,
             'description': description,
           };
-          newsList.add(Category.fromJson(articleData));
+
+          newsList.add(articleData);
         }
       }
 

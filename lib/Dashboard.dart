@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project1/Drawer.dart';
 import 'package:project1/api/get_category_api.dart';
+import 'package:project1/models/Category.dart';
 
 class DashboardScreen extends StatelessWidget {
   final CategoryApi categoryApi = CategoryApi();
@@ -14,7 +15,7 @@ class DashboardScreen extends StatelessWidget {
           upperTitle: 'Ram',
         ),
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
+      body: FutureBuilder<List<Category>>(
         future: categoryApi.fetchNews('technology'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -29,20 +30,20 @@ class DashboardScreen extends StatelessWidget {
             );
           } else {
             // Render the Category data using snapshot.data
-            List<Map<String, dynamic>> newsData = snapshot.data!;
+            List<Category> newsData = snapshot.data!;
 
             return ListView.builder(
               itemCount: newsData.length,
               itemBuilder: (context, index) {
-                Map<String, dynamic> article = newsData[index];
+                Category article = newsData[index];
                 return Column(children: [
                   Text('Title:'),
-                  Text(article['title']),
+                  Text(article.title),
                   SizedBox(
                     height: 4.0,
                   ),
                   Text('Description:'),
-                  Text(article['description']),
+                  Text(article.description),
                 ]);
               },
             );
