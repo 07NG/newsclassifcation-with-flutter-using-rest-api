@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project1/CategoryPages/business.dart';
+import 'package:project1/CategoryPages/entertainment.dart';
+import 'package:project1/CategoryPages/politics.dart';
+import 'package:project1/CategoryPages/sports.dart';
+import 'package:project1/CategoryPages/technology.dart';
 import 'package:project1/Dashboard.dart';
 import 'package:project1/Error.dart';
 import 'package:project1/HomeScreen.dart';
@@ -16,55 +21,53 @@ class MyAppRouter {
         builder: (context, state) => const HomeScreen(),
         routes: <GoRoute>[
           GoRoute(
-              name: 'login',
-              path: 'login', // Remove leading slash '/'
-              builder: (BuildContext context, GoRouterState state) =>
-                  const LoginScreen(),
-              redirect: (state) => '/dashboard'
-              // {
-              //   var user;
-              //   if (user == 'niroj') {
-              //     '/dashboard';
-              //   }
-              //   return '/';
-              // },
-              ),
+            name: 'login',
+            path: 'login', // Remove leading slash '/'
+            builder: (BuildContext context, GoRouterState state) =>
+                const LoginScreen(),
+          ),
           GoRoute(
             name: 'signup',
             path: 'signup', // Remove leading slash '/'
             builder: (BuildContext context, GoRouterState state) =>
                 const SignupScreen(),
           ),
-          // GoRoute(
-          //   name: 'politics',
-          //   path: 'politics', // Remove leading slash '/'
-          //   builder: (BuildContext context, GoRouterState state) =>
-          //       const PoliticsScreen(),
-          // ),
-          // GoRoute(
-          //   name: 'technology',
-          //   path: 'technology', // Remove leading slash '/'
-          //   builder: (BuildContext context, GoRouterState state) =>
-          //       const SignupScreen(),
-          // ),
-          // GoRoute(
-          //   name: 'sports',
-          //   path: 'sports', // Remove leading slash '/'
-          //   builder: (BuildContext context, GoRouterState state) =>
-          //       const SignupScreen(),
-          // ),
-          // GoRoute(
-          //   name: 'business',
-          //   path: 'business', // Remove leading slash '/'
-          //   builder: (BuildContext context, GoRouterState state) =>
-          //       const SignupScreen(),
-          // ),
-          // GoRoute(
-          //   name: 'health',
-          //   path: 'health', // Remove leading slash '/'
-          //   builder: (BuildContext context, GoRouterState state) =>
-          //       const SignupScreen(),
-          // ),
+          GoRoute(
+            name: 'error',
+            path: 'error', // Remove leading slash '/'
+            builder: (BuildContext context, GoRouterState state) =>
+                const ErrorScreen(),
+          ),
+          GoRoute(
+            name: 'politics',
+            path: 'politics', // Remove leading slash '/'
+            builder: (BuildContext context, GoRouterState state) =>
+                PoliticsScreen(),
+          ),
+          GoRoute(
+            name: 'technology',
+            path: 'technology', // Remove leading slash '/'
+            builder: (BuildContext context, GoRouterState state) =>
+                TechnologyScreen(),
+          ),
+          GoRoute(
+            name: 'sports',
+            path: 'sports', // Remove leading slash '/'
+            builder: (BuildContext context, GoRouterState state) =>
+                SportsScreen(),
+          ),
+          GoRoute(
+            name: 'business',
+            path: 'business', // Remove leading slash '/'
+            builder: (BuildContext context, GoRouterState state) =>
+                BusinessScreen(),
+          ),
+          GoRoute(
+            name: 'entertainment',
+            path: 'entertainment', // Remove leading slash '/'
+            builder: (BuildContext context, GoRouterState state) =>
+                EntertainmentScreen(),
+          ),
           GoRoute(
             name: 'upload',
             path: 'upload', // Remove leading slash '/'
@@ -75,13 +78,13 @@ class MyAppRouter {
             name: 'dashboard',
             path: 'dashboard', // Remove leading slash '/'
             builder: (BuildContext context, GoRouterState state) =>
-                const DashboardScreen(),
+                DashboardScreen(),
           ),
           GoRoute(
             name: 'processing',
             path: 'processing', // Remove leading slash '/'
             builder: (BuildContext context, GoRouterState state) =>
-                const DashboardScreen(),
+                DashboardScreen(),
           ),
         ],
       ),
