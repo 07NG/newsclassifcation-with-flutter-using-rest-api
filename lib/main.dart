@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project1/routes/app_route_config.dart';
-import 'package:project1/Dashboard.dart';
-import 'package:project1/HomeScreen.dart';
-import 'package:project1/LoginScreen.dart';
-import 'package:project1/singup.dart';
 
 void main() => runApp(const myApp());
 

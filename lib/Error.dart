@@ -6,7 +6,12 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Invalid username or password')),
+      body: Center(
+        child: Text(
+          'Invalid username or password',
+          style: TextStyle(fontSize: 25.0),
+        ),
+      ),
     );
   }
 }

@@ -49,7 +49,9 @@ class BottomNavBarFb2 extends StatelessWidget {
                 text: "Singup",
                 icon: Icons.signpost_rounded,
                 selected: false,
-                onPressed: () => {context.pushNamed('signup'), print("Hello")},
+                onPressed: () => {
+                  context.pushNamed('dashboard'),
+                },
               ),
             ],
           ),

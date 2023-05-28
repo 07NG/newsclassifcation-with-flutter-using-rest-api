@@ -1,24 +1,53 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project1/Drawer.dart';
-import 'package:project1/LoginScreen.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:project1/routes/app_route_config.dart';
+import 'package:project1/api/get_category_api.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
-
+  final CategoryApi categoryApi = CategoryApi();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: TopBarFb4(
-          title: 'Hello',
+          title: 'Ram',
           upperTitle: 'Ram',
         ),
+      ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: categoryApi.fetchNews('technology'),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Show a loading indicator while data is being fetched
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            // Handle the error case or null data
+            return Center(
+              child: Text(snapshot.stackTrace.toString()),
+            );
+          } else {
+            // Render the Category data using snapshot.data
+            List<Map<String, dynamic>> newsData = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: newsData.length,
+              itemBuilder: (context, index) {
+                Map<String, dynamic> article = newsData[index];
+                return Column(children: [
+                  Text('Title:'),
+                  Text(article['title']),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  Text('Description:'),
+                  Text(article['description']),
+                ]);
+              },
+            );
+          }
+        },
       ),
       drawer: Drawer(
         child: ListView(
@@ -30,27 +59,27 @@ class DashboardScreen extends StatelessWidget {
                     'Politics',
                   ),
                   leading: Icon(Icons.policy_sharp),
+                  onTap: () => context.pushNamed('politics'),
                 ),
                 ListTile(
                   title: Text('Technology'),
                   leading: Icon(Icons.laptop),
+                  onTap: () => context.pushNamed('technology'),
                 ),
                 ListTile(
                   title: Text('Sports'),
                   leading: Icon(Icons.sports_football),
+                  onTap: () => context.pushNamed('sports'),
                 ),
                 ListTile(
                   title: Text('Business'),
                   leading: Icon(Icons.business),
+                  onTap: () => context.pushNamed('business'),
                 ),
                 ListTile(
-                  title: Text('Politics'),
+                  title: Text('Entertainment'),
                   leading: Icon(Icons.business),
-                  onTap: () {
-                    // final String location = context.namedLocation('login');
-                    context.goNamed('login');
-                    // print(location);
-                  },
+                  onTap: () => context.pushNamed('entertainment'),
                 ),
                 SizedBox(
                   height: 40.0,
