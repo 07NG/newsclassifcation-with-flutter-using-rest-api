@@ -8,8 +8,8 @@ class ErrorScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Text(
-          'Invalid username or password',
-          style: TextStyle(fontSize: 25.0),
+          'Invalid Username or Password',
+          style: TextStyle(fontSize: 25.0,),
         ),
       ),
     );

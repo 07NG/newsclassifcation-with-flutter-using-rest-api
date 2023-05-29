@@ -33,6 +33,7 @@ class MyAppRouter {
                 SignupScreen(),
           ),
           GoRoute(
+
             name: 'error',
             path: 'error', // Remove leading slash '/'
             builder: (BuildContext context, GoRouterState state) =>

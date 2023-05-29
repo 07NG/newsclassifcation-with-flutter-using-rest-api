@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project1/navbar.dart';
 
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +35,17 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: email.text, password: password.text);
-                context.pushNamed('dashboard');
+                try {
+                  final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.text, password: password.text);
+                  if (userCredential.user != null) {
+                    context.pushNamed('dashboard');
+                  } else {
+                    context.push('error:'); // Replace 'error' with the route name for your error screen
+                  }
+                } catch (Error) {
+                  print('Error: $Error');
+                  context.pushNamed('error'); // Replace 'error' with the route name for your error screen
+                }
               },
               child: const Text('Signin'),
             ),
