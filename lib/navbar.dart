@@ -50,7 +50,7 @@ class BottomNavBarFb2 extends StatelessWidget {
                 icon: Icons.signpost_rounded,
                 selected: false,
                 onPressed: () => {
-                  context.pushNamed('dashboard'),
+                  context.pushNamed('signup'),
                 },
               ),
             ],

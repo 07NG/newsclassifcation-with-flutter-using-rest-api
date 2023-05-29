@@ -1,14 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:project1/api/auth_api.dart';
-import 'package:project1/navbar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project1/navbar.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController username = TextEditingController();
+    TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
     return Scaffold(
       appBar: AppBar(
@@ -21,8 +21,8 @@ class LoginScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextFormField(
-              controller: username,
-              decoration: const InputDecoration(labelText: 'Name'),
+              controller: email,
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -33,16 +33,9 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () async {
-                try {
-                  if (await AuthApi.login(username.text, password.text) ==
-                      true) {
-                    context.pushNamed('dashboard');
-                  } else {
-                    context.pushNamed('error');
-                  }
-                } catch (e) {
-                  print(e);
-                }
+                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: email.text, password: password.text);
+                context.pushNamed('dashboard');
               },
               child: const Text('Signin'),
             ),

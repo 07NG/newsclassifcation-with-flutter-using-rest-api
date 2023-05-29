@@ -24,13 +24,13 @@ class MyAppRouter {
             name: 'login',
             path: 'login', // Remove leading slash '/'
             builder: (BuildContext context, GoRouterState state) =>
-                const LoginScreen(),
+                LoginScreen(),
           ),
           GoRoute(
             name: 'signup',
             path: 'signup', // Remove leading slash '/'
             builder: (BuildContext context, GoRouterState state) =>
-                const SignupScreen(),
+                SignupScreen(),
           ),
           GoRoute(
             name: 'error',
