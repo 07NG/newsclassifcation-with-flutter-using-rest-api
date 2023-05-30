@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1/FirebaseCrud/Create.dart';
 import 'package:project1/api/news_prediction_api.dart';
 
 class UploadScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class _UploadScreenState extends State<UploadScreen> {
   final TextEditingController _newsTextController = TextEditingController();
   final TextEditingController _titleTextController = TextEditingController();
   String _predictedCategory = '';
-
+  Create uploadnews = Create();
   Future<void> _predictCategory() async {
     final newsText = _newsTextController.text;
     final titleText = _titleTextController.text;
@@ -72,7 +73,9 @@ class _UploadScreenState extends State<UploadScreen> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: _predictCategory,
+              onPressed:()async{ await _predictCategory();
+                uploadnews.uploadNews(_titleTextController.text, _newsTextController.text, _predictedCategory);
+              },
               child: const Text('Predict Category'),
             ),
             const SizedBox(height: 16.0),
