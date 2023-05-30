@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:project1/api/get_category_api.dart';
 import 'package:project1/models/Category.dart';
 
+import '../FirebaseCrud/Add.dart';
+
 class BusinessScreen extends StatelessWidget {
   final CategoryApi categoryApi = CategoryApi();
-
+  final ReadNews readNews = ReadNews();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +32,9 @@ class BusinessScreen extends StatelessWidget {
             height: 15.0,
           ),
           Expanded(
-            child: FutureBuilder<List<Category>>(
-              future: categoryApi.fetchNews('technology'),
+            child: FutureBuilder<List<dynamic>>(
+              future: Future.wait([categoryApi.fetchNews('business'),
+                      readNews.readCategoryNews('business'),]),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Show a loading indicator while data is being fetched
@@ -44,8 +47,15 @@ class BusinessScreen extends StatelessWidget {
                     child: Text(snapshot.stackTrace.toString()),
                   );
                 } else {
-                  // Render the Category data using snapshot.data
-                  List<Category> newsData = snapshot.data!;
+                  // Combine data from both sources
+                  List<dynamic> dataList = snapshot.data!;
+                  List<Category> newsData = [];
+
+                  for (var data in dataList) {
+                    if (data is List<Category>) {
+                      newsData.addAll(data);
+                    }
+                  }
 
                   return ListView.builder(
                     itemCount: newsData.length,

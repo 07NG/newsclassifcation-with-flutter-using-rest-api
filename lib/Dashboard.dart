@@ -1,12 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project1/Drawer.dart';
 import 'package:project1/api/get_category_api.dart';
 import 'package:project1/models/Category.dart';
+import 'FirebaseCrud/Add.dart';
+
 
 class DashboardScreen extends StatelessWidget {
   final CategoryApi categoryApi = CategoryApi();
-
+  final ReadNews readNews = ReadNews();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +38,11 @@ class DashboardScreen extends StatelessWidget {
             height: 15.0,
           ),
           Expanded(
-            child: FutureBuilder<List<Category>>(
-              future: categoryApi.fetchNews('technology'),
+            child: FutureBuilder<List<dynamic>>(
+              future: Future.wait([
+                categoryApi.fetchNews('business'),
+                readNews.readAllNews(),
+              ]),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Show a loading indicator while data is being fetched
@@ -46,34 +52,46 @@ class DashboardScreen extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   // Handle the error case or null data
                   return Center(
-                    child: Text(snapshot.stackTrace.toString()),
+                    child: Text(snapshot.error.toString()),
                   );
                 } else {
-                  // Render the Category data using snapshot.data
-                  List<Category> newsData = snapshot.data!;
+                  // Combine data from both sources
+                  List<dynamic> dataList = snapshot.data!;
+                  List<Category> newsData = [];
+
+                  for (var data in dataList) {
+                    if (data is List<Category>) {
+                      newsData.addAll(data);
+                    }
+                  }
+                  // Sort the newsData list by upload timestamp
+                  // newsData.sort((a, b) => b.uploadTimestamp.compareTo(a.uploadTimestamp));
 
                   return ListView.builder(
                     itemCount: newsData.length,
                     itemBuilder: (context, index) {
                       Category article = newsData[index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Title:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(article.title),
-                          SizedBox(
-                            height: 4.0,
-                          ),
-                          Text(
-                            'Description:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(article.description),
-                          SizedBox(height: 8.0),
-                        ],
+                      return Card(
+                        margin: EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Title:',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(article.title),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            Text(
+                              'Description:',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(article.description),
+                            SizedBox(height: 8.0),
+                          ],
+                        ),
                       );
                     },
                   );

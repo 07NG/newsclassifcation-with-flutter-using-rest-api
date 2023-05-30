@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project1/routes/app_route_config.dart';
@@ -8,9 +9,15 @@ void main() async {
   runApp(myApp());
 }
 
-// ignore: camel_case_types
-class myApp extends StatelessWidget {
-  const myApp({super.key});
+class myApp extends StatefulWidget {
+   myApp({super.key});
+
+  @override
+  State<myApp> createState() => _myAppState();
+}
+
+class _myAppState extends State<myApp> {
+  final CollectionReference _collectionReference = FirebaseFirestore.instance.collection('category');
 
   @override
   Widget build(BuildContext context) {

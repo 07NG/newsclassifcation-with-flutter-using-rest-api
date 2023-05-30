@@ -1,16 +1,17 @@
-# project1
+# project
 
-A new Flutter project.
+News Classification Using Logistic Regression
 
-## Getting Started
+In this project I will try to call Rest Api of my python project that uses Logistic Regression to classify the news
 
-This project is a starting point for a Flutter application.
+Techniques i have used:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1.Navigation->GoRoute
+2.Rest Api-> post method and get method
+3.Firebase
+    -Authentication->Email/Password authentication
+    -CRUD operation
+    -Post notification
+4.State management
+    -setState
+    -Provider
