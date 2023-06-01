@@ -1,17 +1,19 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project1/Drawer.dart';
 import 'package:project1/api/get_category_api.dart';
 import 'package:project1/models/Category.dart';
-import 'FirebaseCrud/Add.dart';
 
+import 'FirebaseCrud/Add.dart';
 
 class DashboardScreen extends StatelessWidget {
   final CategoryApi categoryApi = CategoryApi();
   final ReadNews readNews = ReadNews();
+
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: TopBarFb4(
@@ -35,7 +37,7 @@ class DashboardScreen extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 15.0,
+            height: height * 0.03,
           ),
           Expanded(
             child: FutureBuilder<List<dynamic>>(
@@ -72,24 +74,56 @@ class DashboardScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       Category article = newsData[index];
                       return Card(
-                        margin: EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        margin: EdgeInsets.fromLTRB(width * 0.01, width * 0.0,
+                            width * 0.01, width * 0.1),
+                        shadowColor: Colors.grey[800],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              'Title:',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            Expanded(
+                              child: Image.network(
+                                article.image ?? '',
+                                height: height * 0.25,
+                                width: width * 0.25,
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                            Text(article.title),
                             SizedBox(
-                              height: 4.0,
+                              width: width * 0.03,
                             ),
-                            Text(
-                              'Description:',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Container(
+                                  height: height * 0.25,
+                                  width: width * 0.60,
+                                  child: OverflowBox(
+                                    maxHeight: height * 0.25,
+                                    maxWidth: width * 0.50,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Title:',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(article.title),
+                                        SizedBox(
+                                          height: height * 0.03,
+                                        ),
+                                        Text(
+                                          'Description:',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(article.description),
+                                        SizedBox(height: height * 0.03),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                            Text(article.description),
-                            SizedBox(height: 8.0),
                           ],
                         ),
                       );

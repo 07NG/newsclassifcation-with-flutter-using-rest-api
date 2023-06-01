@@ -60,12 +60,15 @@ class _UploadScreenState extends State<UploadScreen> {
               ),
             ),
             TextField(
+              maxLength: 100,
               controller: _titleTextController,
               decoration: const InputDecoration(
                 labelText: 'Title',
               ),
             ),
             TextField(
+              maxLength: 1000,
+              maxLines: 10,
               controller: _newsTextController,
               decoration: const InputDecoration(
                 labelText: 'Description',
@@ -74,7 +77,7 @@ class _UploadScreenState extends State<UploadScreen> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed:()async{ await _predictCategory();
-                uploadnews.uploadNews(_titleTextController.text, _newsTextController.text, _predictedCategory);
+                uploadnews.uploadNews(_titleTextController.text, _newsTextController.text, _predictedCategory.toLowerCase());
               },
               child: const Text('Predict Category'),
             ),
