@@ -47,7 +47,7 @@ android {
         applicationId "com.example.my_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 19
+        minSdkVersion 19 #Set_this_to_19_for_flutter3_version
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -71,5 +71,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-// Move the `id 'com.google.gms.google-services'` line to the bottom
-apply plugin: 'com.google.gms.google-services'
+// Move your `id 'com.google.gms.google-services'` line to the bottom
+apply plugin: 'com.google.gms.google-services' 
