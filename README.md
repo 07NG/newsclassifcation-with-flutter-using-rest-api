@@ -15,3 +15,5 @@ Techniques i have used:
 4.State management
     -setState
     -Provider
+5.Responsive
+    -LayoutBuilder
