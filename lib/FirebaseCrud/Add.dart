@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project1/models/Category.dart';
+import 'package:news_app/models/Category.dart';
 
 class ReadNews {
   Future<List<Category>> readAllNews() async {

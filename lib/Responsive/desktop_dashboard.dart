@@ -1,0 +1,202 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:news_app/Drawer.dart';
+import 'package:news_app/api/get_category_api.dart';
+import 'package:news_app/models/Category.dart';
+
+import '../FirebaseCrud/Add.dart';
+
+class desktopdashboardScaffold extends StatelessWidget {
+  final CategoryApi categoryApi = CategoryApi();
+  final ReadNews readNews = ReadNews();
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.grey[400],
+        title: TopBarFb4(
+          title: 'Hello,',
+          icon: Icons.waving_hand_rounded,
+          upperTitle: 'niroj',
+        ),
+      ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Drawer(
+            backgroundColor: Colors.grey[400],
+            child: ListView(
+              children: [
+                Column(
+                  children: [
+                    DrawerHeader(
+                      child: Icon(Icons.favorite),
+                    ),
+                    Divider(
+                      thickness: 0.0,
+                    ),
+                    ListTile(
+                      hoverColor: Colors.pink[600],
+                      title: Text('Politics'),
+                      leading: Icon(Icons.policy_sharp),
+                      onTap: () => context.pushNamed('politics'),
+                    ),
+                    ListTile(
+                      title: Text('Technology'),
+                      leading: Icon(Icons.laptop),
+                      onTap: () => context.pushNamed('technology'),
+                    ),
+                    ListTile(
+                      title: Text('Sports'),
+                      leading: Icon(Icons.sports_football),
+                      onTap: () => context.pushNamed('sports'),
+                    ),
+                    ListTile(
+                      title: Text('Business'),
+                      leading: Icon(Icons.business),
+                      onTap: () => context.pushNamed('business'),
+                    ),
+                    ListTile(
+                      title: Text('Entertainment'),
+                      leading: Icon(Icons.business),
+                      onTap: () => context.pushNamed('entertainment'),
+                    ),
+                    Divider(
+                      thickness: 1.0,
+                    ),
+                    ListTile(
+                      title: Text('Upload'),
+                      leading: Icon(Icons.dashboard_customize),
+                      onTap: () => context.pushNamed('upload'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.grey[300],
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                        'All News',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  Expanded(
+                    child: FutureBuilder<List<dynamic>>(
+                      future: Future.wait([
+                        categoryApi.fetchNews('business'),
+                        readNews.readAllNews(),
+                      ]),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // Show a loading indicator while data is being fetched
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          // Handle the error case or null data
+                          return Center(
+                            child: Text(snapshot.error.toString()),
+                          );
+                        } else {
+                          // Combine data from both sources
+                          List<dynamic> dataList = snapshot.data!;
+                          List<Category> newsData = [];
+
+                          for (var data in dataList) {
+                            if (data is List<Category>) {
+                              newsData.addAll(data);
+                            }
+                          }
+                          // Sort the newsData list by upload timestamp
+                          // newsData.sort((a, b) => b.uploadTimestamp.compareTo(a.uploadTimestamp));
+
+                          return ListView.builder(
+                            itemCount: newsData.length,
+                            itemBuilder: (context, index) {
+                              Category article = newsData[index];
+                              return Card(
+                                margin: EdgeInsets.fromLTRB(width * 0.01,
+                                    width * 0.0, width * 0.01, width * 0.1),
+                                shadowColor: Colors.grey[800],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Image.network(
+                                        article.image ?? '',
+                                        height: height * 0.25,
+                                        width: width * 0.25,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.03,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height: height * 0.25,
+                                        width: width * 0.60,
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Title:',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(article.title),
+                                              SizedBox(
+                                                height: height * 0.03,
+                                              ),
+                                              Text(
+                                                'Description:',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(article.description),
+                                              SizedBox(height: height * 0.03),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

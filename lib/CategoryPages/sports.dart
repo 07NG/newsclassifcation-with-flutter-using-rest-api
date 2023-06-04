@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project1/api/get_category_api.dart';
-import 'package:project1/models/Category.dart';
+import 'package:news_app/api/get_category_api.dart';
+import 'package:news_app/models/Category.dart';
 
 import '../FirebaseCrud/Add.dart';
 
@@ -33,8 +33,10 @@ class SportsScreen extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder<List<dynamic>>(
-              future: Future.wait([categoryApi.fetchNews('sports'),
-                readNews.readCategoryNews('sports'),]),
+              future: Future.wait([
+                categoryApi.fetchNews('sports'),
+                readNews.readCategoryNews('sports'),
+              ]),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Show a loading indicator while data is being fetched

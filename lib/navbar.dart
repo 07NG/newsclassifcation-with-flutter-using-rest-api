@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:project1/routes/app_route_config.dart';
 
-class BottomNavBarFb2 extends StatelessWidget {
-  const BottomNavBarFb2({Key? key}) : super(key: key);
+class BottomNavBarFb2 extends StatefulWidget {
+  BottomNavBarFb2({Key? key}) : super(key: key);
 
+  @override
+  _BottomNavBarFb2State createState() => _BottomNavBarFb2State();
+}
+
+class _BottomNavBarFb2State extends State<BottomNavBarFb2> {
   final primaryColor = const Color(0xff4338CA);
   final secondaryColor = const Color(0xff6D28D9);
   final accentColor = const Color(0xffffffff);
   final backgroundColor = const Color(0xffffffff);
   final errorColor = const Color(0xffEF4444);
 
+  List<bool> isActive = [false, true, false, false];
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: Colors.white,
+      color: Colors.grey[400],
       child: SizedBox(
         height: 56,
         width: MediaQuery.of(context).size.width,
@@ -24,33 +30,47 @@ class BottomNavBarFb2 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconBottomBar(
-                  text: "Online news portal",
-                  icon: Icons.newspaper,
-                  selected: false,
-                  onPressed: () => {
-                        context.push('/'),
-                        print(const Text('hello')),
-                      }),
+                text: "Online news portal",
+                icon: Icons.newspaper,
+                selected: isActive[0],
+                onPressed: () {
+                  setState(() {
+                    isActive = [true, false, false, false];
+                  });
+                  context.push('/');
+                },
+              ),
               IconBottomBar(
                 text: "Home",
                 icon: Icons.home,
-                selected: true,
-                onPressed: () => context.pushNamed('home'),
+                selected: isActive[1],
+                onPressed: () {
+                  setState(() {
+                    isActive = [false, true, false, false];
+                  });
+                  context.push('/');
+                },
               ),
               IconBottomBar(
                 text: "Login",
                 icon: Icons.login_sharp,
-                selected: false,
+                selected: isActive[2],
                 onPressed: () {
-                  context.pushNamed('login');
+                  setState(() {
+                    isActive = [false, false, true, false];
+                  });
+                  context.push('/login');
                 },
               ),
               IconBottomBar(
-                text: "Singup",
+                text: "Signup",
                 icon: Icons.signpost_rounded,
-                selected: false,
-                onPressed: () => {
-                  context.pushNamed('signup'),
+                selected: isActive[3],
+                onPressed: () {
+                  context.push('/signup');
+                  setState(() {
+                    isActive = [false, false, false, true];
+                  });
                 },
               ),
             ],
@@ -62,17 +82,18 @@ class BottomNavBarFb2 extends StatelessWidget {
 }
 
 class IconBottomBar extends StatelessWidget {
-  const IconBottomBar(
-      {Key? key,
-      required this.text,
-      required this.icon,
-      required this.selected,
-      required this.onPressed})
-      : super(key: key);
+  const IconBottomBar({
+    Key? key,
+    required this.text,
+    required this.icon,
+    required this.selected,
+    required this.onPressed,
+  }) : super(key: key);
+
   final String text;
   final IconData icon;
   final bool selected;
-  final Function() onPressed;
+  final VoidCallback onPressed;
 
   final primaryColor = const Color(0xff4338CA);
 
@@ -86,15 +107,16 @@ class IconBottomBar extends StatelessWidget {
           icon: Icon(
             icon,
             size: 25,
-            color: selected ? primaryColor : Colors.black54,
+            color: selected ? primaryColor : Colors.black87,
           ),
         ),
         Text(
           text,
           style: TextStyle(
-              fontSize: 12,
-              height: .1,
-              color: selected ? primaryColor : Colors.grey.withOpacity(.75)),
+            fontSize: 12,
+            height: .1,
+            color: selected ? primaryColor : Colors.black87,
+          ),
         )
       ],
     );
