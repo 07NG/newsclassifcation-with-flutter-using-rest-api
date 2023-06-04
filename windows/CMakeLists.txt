@@ -1,4 +1,5 @@
 # Project-level configuration.
+#Deafult genereated but still more changes to come.
 cmake_minimum_required(VERSION 3.14)
 project(news_app LANGUAGES CXX)
 
